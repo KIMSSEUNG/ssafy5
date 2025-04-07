@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div th:fragment="center">
+        <header>
+            <h1> <a th:href="@{/}">Hello SSAFY</a></h1>
+            <nav align="right">
+                <a th:href="@{/user/login}">게시판</a>
+                <a th:href="@{/user/login}">결제 페이지</a>
+                <a th:href="@{/user/login}">로그인</a>
+            </nav>
+        </header>
+    </div>    
+</body>
+</html>
