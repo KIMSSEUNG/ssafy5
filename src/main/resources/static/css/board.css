@@ -1,0 +1,53 @@
+    body {
+    font-family: Arial, sans-serif;
+    padding: 30px;
+    background-color: #f5f5f5;
+    }
+
+    .board-form {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .board-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    }
+
+    .board-form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    }
+
+    .board-form input[type="text"],
+    .board-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    }
+
+    .board-form input[type="file"] {
+    margin-top: 10px;
+    }
+
+    .board-form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #0071e3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    }
+
+    .board-form button:hover {
+    background-color: #005bb5;
+    }
