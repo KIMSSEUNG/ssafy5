@@ -1,6 +1,5 @@
 const editor = document.getElementById('editor');
 const imageInput = document.getElementById('image');
-const hiddenContent = document.getElementById('hiddenContent');
 const imageFiles = []; // 서버에 보낼 이미지 목록
 
 const maxImageCount = 5;
@@ -22,50 +21,51 @@ imageInput.addEventListener('change', function () {
     return;
   }
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'image-block';
+  const wrapper = document.createElement('div');
+  wrapper.className = 'image-block';
 
-    const img = document.createElement('img');
-    img.src = e.target.result;
-    img.className = 'inserted-img';
-    img.draggable = false;
+  const img = document.createElement('img');
+  img.src = URL.createObjectURL(file); // ✅ base64 → objectURL
+  img.className = 'inserted-img';
+  img.draggable = false;
 
-    img.addEventListener('click', function () {
-      const confirmDelete = confirm('이 이미지를 삭제하시겠습니까?');
-      if (confirmDelete) {
-        const idx = imageFiles.indexOf(file);
-        if (idx !== -1) {
-          imageFiles.splice(idx, 1);
-        }
-        wrapper.remove();
+  const imageIndex = imageFiles.length;
+  const token = `__IMAGE_${imageIndex}__`; // ✅ 토큰 삽입
+  wrapper.setAttribute('data-token', token);
+
+  img.addEventListener('click', function () {
+    const confirmDelete = confirm('이 이미지를 삭제하시겠습니까?');
+    if (confirmDelete) {
+      const idx = imageFiles.indexOf(file);
+      if (idx !== -1) {
+        imageFiles.splice(idx, 1);
       }
-    });
+      wrapper.remove();
+    }
+  });
 
-    wrapper.appendChild(img);
+  wrapper.appendChild(img);
 
-    // 커서 위치에 삽입
-    editor.focus();
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
+  // 커서 위치에 삽입
+  editor.focus();
+  const selection = window.getSelection();
+  if (!selection.rangeCount) return;
+  const range = selection.getRangeAt(0);
+  range.deleteContents();
 
-    range.insertNode(document.createElement('br'));
-    range.insertNode(wrapper);
-    range.insertNode(document.createElement('br'));
+  // 삽입
+  range.insertNode(document.createElement('br'));
+  range.insertNode(wrapper);
+  range.insertNode(document.createElement('br'));
 
-    range.setStartAfter(wrapper);
-    range.collapse(true);
-    selection.removeAllRanges();
-    selection.addRange(range);
+  range.setStartAfter(wrapper);
+  range.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(range);
 
-    imageFiles.push(file); // 파일 저장
-    imageInput.value = '';
-  };
+  imageFiles.push(file); // ✅ 이미지 push (base64와 무관)
 
-  reader.readAsDataURL(file);
+  imageInput.value = '';
 });
 
 function isCursorInsideEditor() {
@@ -78,15 +78,29 @@ function isCursorInsideEditor() {
 document.querySelector('form').addEventListener('submit', function (e) {
   e.preventDefault(); // 기본 제출 막기
 
+  // ⭐ 오버레이 제거
+  const dragOverlay = editor.querySelector('.drag-overlay');
+  if (dragOverlay) {
+    dragOverlay.remove();
+  }
+
   const formData = new FormData();
   const title = document.getElementById('title').value;
-  const contentHtml = editor.innerHTML;
+
+  // ✅ HTML → 토큰 포함한 content로 치환
+  const clonedEditor = editor.cloneNode(true);
+  clonedEditor.querySelectorAll('.image-block').forEach(wrapper => {
+    const token = wrapper.getAttribute('data-token');
+    wrapper.replaceWith(token);
+  });
+
+  const contentHtml = clonedEditor.innerHTML;
 
   formData.append('title', title);
   formData.append('content', contentHtml);
 
   imageFiles.forEach(file => {
-    formData.append('images', file); // 복수 업로드
+    formData.append('images', file);
   });
 
   fetch('/board/write', {
@@ -95,7 +109,6 @@ document.querySelector('form').addEventListener('submit', function (e) {
   }).then(res => {
     if (res.ok) {
       alert('업로드 성공!');
-      window.location.href = '/board';
     } else {
       alert('업로드 실패!');
     }
