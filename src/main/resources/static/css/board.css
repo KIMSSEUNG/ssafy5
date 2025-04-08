@@ -35,9 +35,13 @@ input[type="text"],
 }
 
 .editable {
+  position: relative;
   min-height: 200px;
   background-color: #fff;
   overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
 }
 
 button {
@@ -69,4 +73,22 @@ button:hover {
   display: block;
   border-radius: 4px;
   cursor: pointer;
+}
+
+/* 오버레이는 절대 위치로 editor 위에만 보임 */
+.drag-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #888;
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 10;
+  display: none;
+}
+
+/* 드래그 중일 때만 보여주기 */
+.editable.dragover .drag-overlay {
+  display: block;
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>게시글 작성</title>
-    <link rel="stylesheet" href="../static/css/board.css" />
+    <link rel="stylesheet" href="/css/board.css" />
 </head>
 <body>
 <form class="board-form" action="/board/write" method="post" enctype="multipart/form-data">
@@ -12,17 +12,22 @@
     <label for="title">글 제목</label>
     <input type="text" id="title" name="title" required />
 
-    <label for="content">글 내용</label>
-    <div id="editor" class="editable" contenteditable="true"></div>
+    <label>글 내용</label> <!-- ✅ for 속성 제거 -->
+    <div class="editor-wrapper" style="position: relative;">
+        <div id="editor" class="editable" contenteditable="true">
+            <div class="drag-overlay">이미지를 여기로 드래그하여 추가하세요</div> <!-- ✅ 오버레이는 editor 내부로 이동 -->
+        </div>
+    </div>
+   
     <input type="hidden" name="content" id="hiddenContent" />
 
     <label for="image">사진 첨부</label>
-    <input type="file" id="image" name="image" accept="image/*" />
-
+    <input type="file" id="image" name="images" multiple accept="image/*" />
     <button type="submit">제출</button>
 </form>
 
-<!-- 분리된 JavaScript 파일 -->
-<script src="../static/js/board.js"></script>
+<!-- JavaScript 파일 -->
+<script src="/js/board/board.js"></script>
+<script src="/js/board/dragBoard.js"></script>
 </body>
 </html>
