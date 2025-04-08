@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+< !DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -11,16 +13,15 @@
 <div class="product-container">
     <!-- 이미지 -->
     <div class="product-image">
-        <img src="https://via.placeholder.com/400x300" alt="제품 이미지">
+        <img src="${product.imageUrl}" alt="${product.name}">
     </div>
 
     <!-- 정보 -->
     <div class="product-info">
-        <div class="product-name">샘플 상품 A</div>
-        <div class="product-price">₩19,900</div>
+        <div class="product-name">${product.name}</div>
+        <div class="product-price">₩<c:out value="${product.price}" /></div>
         <div class="product-desc">
-            이 제품은 샘플로 작성된 제품입니다. 실제 데이터는 JSP와 연동 시 출력됩니다.
-            다양한 기능과 깔끔한 디자인으로 구성되어 있습니다.
+            ${product.description}
         </div>
 
         <div>
