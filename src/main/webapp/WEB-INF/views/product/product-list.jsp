@@ -6,20 +6,29 @@
 <head>
   <meta charset="UTF-8">
   <title>상품 목록</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="/css/product/product-list.css" rel="stylesheet" />
 </head>
 <body>
 
-<h1>상품 목록</h1>
-
-<div class="product-list">
-  <c:forEach var="product" items="${products}">
-    <a href="/product/detail?id=${product.id}" class="product-card">
-      <img src="${product.imageUrl}" alt="상품 이미지">
-      <div class="product-name">${product.name}</div>
-      <div class="product-price">₩${product.price}</div>
-    </a>
-  </c:forEach>
+<div class="container py-4">
+  <h2 class="mb-4">상품 목록</h2>
+  <div class="row g-4">
+    <c:forEach var="product" items="${products}">
+      <div class="col-6 col-md-3">
+        <a href="/product/detail?id=${product.id}" class="product-card d-block">
+          <div class="card h-100 border-0">
+            <img src="${product.imageUrl}" class="product-image card-img-top" alt="${product.name}">
+            <div class="card-body text-center">
+              <div class="product-name">${product.name}</div>
+              <div class="product-price">₩${product.price}</div>
+              <div class="product-desc">${product.description}</div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </c:forEach>
+  </div>
 </div>
 
 </body>

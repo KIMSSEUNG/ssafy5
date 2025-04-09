@@ -1,5 +1,6 @@
 body {
-    background-color: #f8f9fa;
+    background-color: #f6f7fb;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .container-main {
@@ -21,11 +22,41 @@ body {
     height: fit-content;
 }
 
+.card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    font-weight: 600;
+    background: none;
+    border-bottom: 1px solid #eee;
+}
+
+.form-check-input:checked {
+    background-color: #4b3eff;
+    border-color: #4b3eff;
+}
+
 .order-summary {
     background: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid #e2e4ea;
+}
+
+.order-summary h5 {
+    font-weight: 600;
+}
+
+.order-summary .total-row {
+    font-size: 1.2rem;
+    color: #000;
+}
+
+.order-summary .price-value {
+    font-weight: 500;
 }
 
 .fixed-bottom-bar {
@@ -33,11 +64,24 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: white;
+    background: white;
     border-top: 1px solid #ddd;
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 999;
+}
+
+.btn-checkout {
+    background: #2e2a9e;
+    color: white;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 10px 28px;
+    font-size: 16px;
+}
+
+.btn-checkout:hover {
+    background: #1f1a84;
 }

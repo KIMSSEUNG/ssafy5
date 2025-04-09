@@ -1,9 +1,16 @@
+<%@ page import="org.json.*, java.util.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    int price = 100;
-    int shippingFee = 0;
+    String jsonStr = request.getParameter("orderItemsJson");
+    int totalPrice = Integer.parseInt(request.getParameter("totalPrice"));
+
+    // 간단한 계산식
+    int price = totalPrice;
     int discount = 0;
-    int total = price + shippingFee - discount;
+    int shippingFee = (price >= 50000) ? 0 : 3000;
+    int total = price - discount + shippingFee;
+
+    JSONArray orderItems = new JSONArray(jsonStr);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -15,12 +22,11 @@
 </head>
 <body>
 
-<!-- 사용자 입력 form (서버 전송은 JS에서 수행) -->
 <form id="orderForm">
     <div class="container-main d-flex">
-        <!-- 왼쪽 패널 -->
-        <div class="left-panel flex-fill me-4">
-            <!-- 배송지 정보 -->
+        <!-- 왼쪽 영역 -->
+        <div class="left-panel flex-grow-1 me-4">
+            <!-- 배송지 -->
             <div class="card mb-4">
                 <div class="card-header">배송지 정보</div>
                 <div class="card-body">
@@ -59,55 +65,53 @@
             </div>
         </div>
 
-        <!-- 오른쪽 패널 -->
+        <!-- 오른쪽 영역 -->
         <div class="right-panel" style="width: 300px;">
-            <div class="order-summary shadow-sm p-3">
-                <h5 class="mb-3">결제 상세</h5>
+            <div class="order-summary">
+                <h5 class="mb-4">결제 예정 금액</h5>
                 <div class="d-flex justify-content-between mb-2">
-                    <span>상품 금액</span>
-                    <span><%= price %>원</span>
+                    <span>총 상품금액</span>
+                    <span class="price-value"><%= price %>원</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
-                    <span>배송비</span>
-                    <span><%= shippingFee %>원</span>
+                    <span>총 할인금액</span>
+                    <span class="price-value text-success">-<%= discount %>원</span>
                 </div>
-                <div class="d-flex justify-content-between text-success mb-2">
-                    <span>할인</span>
-                    <span>-<%= discount %>원</span>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>총 배송비</span>
+                    <span class="price-value"><%= shippingFee %>원</span>
                 </div>
                 <hr>
-                <div class="d-flex justify-content-between fw-bold">
-                    <span>총 결제금액</span>
-                    <span><%= total %>원</span>
+                <div class="d-flex justify-content-between total-row mt-3">
+                    <span>최종 결제 금액</span>
+                    <span class="price-value"><%= total %>원</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 결제 금액 관련 숨겨진 필드 -->
+    <!-- 숨겨진 필드 -->
     <input type="hidden" name="price" value="<%= price %>">
     <input type="hidden" name="shippingFee" value="<%= shippingFee %>">
     <input type="hidden" name="discount" value="<%= discount %>">
     <input type="hidden" name="total" value="<%= total %>">
+    <input type="hidden" name="orderItemsJson" value='<%= jsonStr %>'>
+    <input type="hidden" name="totalPrice" value="<%= totalPrice %>">
 </form>
 
 <!-- 하단 결제 버튼 -->
-<div class="fixed-bottom-bar shadow-sm d-flex justify-content-between align-items-center p-3 bg-white border-top">
-    <strong>총 결제금액: <%= total %>원</strong>
-    <button type="button" class="btn btn-success px-4" onclick="requestPay(totalAmount, impCode)">결제하기</button>
+<div class="fixed-bottom-bar">
+    <strong style="font-size: 1.1rem;">총 결제금액: <%= total %>원</strong>
+    <button type="button" class="btn btn-checkout" onclick="requestPay(totalAmount, impCode)">결제하기</button>
 </div>
 
-<!-- 아임포트 스크립트 -->
+<!-- 아임포트 -->
 <script src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-<script src="/js/payment.js"></script>
-<!-- 총 결제금액 및 impCode 전달 -->
 <script>
     const totalAmount = <%= total %>;
-    const impCode = ${impCode};
+    const impCode = '${impCode}'; // impCode는 서버에서 전달되어야 합니다.
 </script>
-
-<!-- 외부 스크립트 -->
-
+<script src="/js/payment.js"></script>
 
 </body>
 </html>

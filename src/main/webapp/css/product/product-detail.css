@@ -33,7 +33,7 @@ body {
 
 .product-price {
     font-size: 20px;
-    color: #d23f3f;
+    color: #000000;
 }
 
 .product-desc {
@@ -56,10 +56,11 @@ body {
 }
 
 .btn-cart {
-    background-color: #f1c40f;
+    background-color: #0f2df1;
+    color: white;
 }
 
 .btn-buy {
-    background-color: #2ecc71;
+    background-color: #2e48cc;
     color: white;
 }

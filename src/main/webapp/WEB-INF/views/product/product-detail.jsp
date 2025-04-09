@@ -19,7 +19,7 @@
     <!-- 정보 -->
     <div class="product-info">
         <div class="product-name">${product.name}</div>
-        <div class="product-price">₩<c:out value="${product.price}" /></div>
+        <div class="product-price">₩<c:out value="${product.price}" />${product.price}</div>
         <div class="product-desc">
             ${product.description}
         </div>
@@ -35,6 +35,7 @@
         </div>
     </div>
 </div>
+<script src="/js/wishlist.js"></script>
 
 </body>
 </html>

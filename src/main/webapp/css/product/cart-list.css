@@ -1,0 +1,31 @@
+.brand-header {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 20px 0 10px;
+}
+.price-original {
+    text-decoration: line-through;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+.fixed-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #21265c;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+.option-link {
+    font-size: 0.9rem;
+    color: #666;
+}
+.product-img {
+    width: 80px;
+    height: auto;
+}

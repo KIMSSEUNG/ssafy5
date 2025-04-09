@@ -1,3 +1,6 @@
+CREATE SCHEMA IF NOT EXISTS `ssafy`;
+use `ssafy`;
+
 INSERT INTO product (id, name, description, price, image_url, stock, created_at)
 VALUES
     (1, '자연산 통영 멍게', '싱싱한 통영 멍게, 손질 완료', 9900, 'https://via.placeholder.com/80', 100, NOW()),
