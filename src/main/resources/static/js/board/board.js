@@ -50,13 +50,13 @@ imageInput.addEventListener('change', function () {
   editor.focus();
   const selection = window.getSelection();
   if (!selection.rangeCount) return;
-  const range = selection.getRangeAt(0);
+  const range = selection.getRangeAt(0);  // 현재 선택(커서/드래그 상태)의 영역 가져오기
   range.deleteContents();
 
   // 삽입
   range.insertNode(document.createElement('br'));
   range.insertNode(wrapper);
-  range.insertNode(document.createElement('br'));
+  range.insertNode(document.createElement('br')); //여기서 이미지를 삽입
 
   range.setStartAfter(wrapper);
   range.collapse(true);

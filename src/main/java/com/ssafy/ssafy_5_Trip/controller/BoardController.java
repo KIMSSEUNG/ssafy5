@@ -22,15 +22,15 @@ import java.util.UUID;
 @Slf4j
 public class BoardController {
 
-    @Value("${file.upload.path}")
-    private String uploadDir;
-    @Value("${file.access.url}")
-    private String accessUrl;
-
     @GetMapping("")
     public String boardPage() {
         log.info("board GET");
         return "board"; // board.html을 반환
+    }
+
+    @GetMapping("/test")
+    public String boardtest() {
+        return "test"; // board.html을 반환
     }
 
     @PostMapping("/write")
@@ -43,6 +43,7 @@ public class BoardController {
         List<String> uploadedUrls = new ArrayList<>();
 
         try {
+            String uploadDir = System.getProperty("user.dir") + "/uploads";
             Path uploadPath = Paths.get(uploadDir);
             // uploads 폴더가 없으면 생성
             if (!Files.exists(uploadPath)) {
@@ -52,12 +53,14 @@ public class BoardController {
             if (images != null) {
                 for (int i = 0; i < images.length; i++) {
                     MultipartFile image = images[i];
-                    String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+                    String imgName= imageNameChange(image.getOriginalFilename());
+                    String fileName = UUID.randomUUID() + "_" + imgName;
                     Path targetPath = uploadPath.resolve(fileName); //경로 + 파일명 결합 = 실제 저장할 위치
 
                     image.transferTo(targetPath.toFile()); //사용자가 업로드한 이미지 파일을 해당 경로에 저장
 
-                    String imageUrl = accessUrl + fileName;
+                    String imageUrl = "/images/" + fileName;
+                    // 외부에 나의 디렉터리 경로를 설정하는 것은 보안 이슈에 걸릴 수 있음으로, images 라는 임의 url로 설정한다.
                     uploadedUrls.add(imageUrl); // Content에 들어갈 토큰을 uploadUrls명으로 바꿔주기 위해서 저장
                 }
             }
@@ -67,14 +70,19 @@ public class BoardController {
                 content = content.replace("__IMAGE_" + i + "__", "<br><img src='" + uploadedUrls.get(i) + "'><br>");
             }
 
-            return "redirect:/board";
+            return "redirect:/board/test";
 
         } catch (IOException e) {
             throw new RuntimeException("이미지 저장 실패", e);
         }
 
-        // 결과 로그 출력
-
-
+        
     }
+
+    String imageNameChange(String name){
+        String cleanedName = name
+            .replaceAll("[^a-zA-Z0-9.\\-]", "_"); // 안전 문자만 허용
+        return cleanedName;
+    }
+
 }
